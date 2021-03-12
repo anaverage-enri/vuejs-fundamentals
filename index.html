@@ -11,47 +11,7 @@
     <div class="nav-bar"></div>
 
     <div id="app">
-        <div class="product">
-            <div class="product-image">
-                <!-- u can use ":" instead of "v-bind:" -->
-                <img :src="image" :alt="description">
-            </div>
-
-            <div class="product-info">
-                <h1>{{ title }}</h1>
-
-                <!-- v-if remove/add element to the DOM
-                U can use v-show to change the visibility instead if the element is frequently changed -->
-                <p v-if="inStock">In Stock</p>
-                <p v-else>Out of Stock</p>
-
-                <ul>
-                    <li v-for="detail in details">{{ detail }}</li>
-                </ul>
-                <ul>
-                    <li v-for="size in sizes">{{ size }}</li>
-                </ul>
-
-                <div v-for="(variant, index) in variants" 
-                    :key="variant.variantId"
-                    class="color-box"
-                    :style="{ backgroundColor: variant.variantColor }"
-                    @mouseover="updateProduct(index)">
-                    <!-- u can use "@" instead of "v-on:" -->
-                </div>
-
-                <button @click="addToCart" 
-                    :disable="!inStock"
-                    :class="{ disabledButton: !inStock}">Add to Cart</button>
-                <!-- <button @click="removeFromCart">Remove from Cart</button> -->
-                
-                <div class="cart">
-                    <p>Cart({{ cart }})</p>
-                </div>
-            </div>
-        
-            
-        </div>
+        <product :premium="premium"></product>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

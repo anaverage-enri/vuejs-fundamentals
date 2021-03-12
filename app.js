@@ -1,27 +1,75 @@
-var app = new Vue({
-    el: '#app',
-    data: {
-        brand: 'Vue Mastery',
-        product: 'Socks',
-        selectedVariant: 0,
-        description: 'A pair of warm, fuzzy socks',
-        details: ["80% cotton", "20% polyester", "Gender-neutral"],
-        sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-        variants: [
-            {
-                variantId: 0001,
-                variantColor: "green",
-                variantImage: './assets/vmSocks-green-onWhite.jpg',
-                variantQuantity: 10,
-            },
-            {
-                variantId: 0002,
-                variantColor: "blue",
-                variantImage: './assets/vmSocks-blue-onWhite.jpg',
-                variantQuantity: 0,
-            }
-        ],
-        cart: 0,
+Vue.component('product', {
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
+    template: `
+        <div class="product">
+            <div class="product-image">
+                <!-- u can use ":" instead of "v-bind:" -->
+                <img :src="image" :alt="description">
+            </div>
+
+            <div class="product-info">
+                <h1>{{title}}</h1>
+
+                <!-- v-if remove/add element to the DOM
+                U can use v-show to change the visibility instead if the element is frequently changed -->
+                <p v-if="inStock">In Stock</p>
+                <p v-else>Out of Stock</p>
+                <p>Shipping: {{shipping}}</p>
+                
+                <product-details :details="details"></product-details>
+                
+                <ul>
+                    <li v-for="size in sizes">{{size}}</li>
+                </ul>
+
+                <div v-for="(variant, index) in variants" 
+                    :key="variant.variantId"
+                    class="color-box"
+                    :style="{ backgroundColor: variant.variantColor }"
+                    @mouseover="updateProduct(index)">
+                    <!-- u can use "@" instead of "v-on:" -->
+                </div>
+
+                <button @click="addToCart" 
+                    :disable="!inStock"
+                    :class="{ disabledButton: !inStock}">Add to Cart</button>
+                <!-- <button @click="removeFromCart">Remove from Cart</button> -->
+                
+                <div class="cart">
+                    <p>Cart({{cart}})</p>
+                </div>
+            </div>
+        </div>
+    `,
+    data() {
+        return {
+            brand: 'Vue Mastery',
+            product: 'Socks',
+            selectedVariant: 0,
+            description: 'A pair of warm, fuzzy socks',
+            details: ["80% cotton", "20% polyester", "Gender-neutral"],
+            sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            variants: [
+                {
+                    variantId: 0001,
+                    variantColor: "green",
+                    variantImage: './assets/vmSocks-green-onWhite.jpg',
+                    variantQuantity: 10,
+                },
+                {
+                    variantId: 0002,
+                    variantColor: "blue",
+                    variantImage: './assets/vmSocks-blue-onWhite.jpg',
+                    variantQuantity: 0,
+                }
+            ],
+            cart: 0,
+        }
     },
     methods: {
         addToCart() {
@@ -50,6 +98,33 @@ var app = new Vue({
         
         inStock() {
             return this.variants[this.selectedVariant].variantQuantity
+        },
+        shipping() {
+            if (this.premium) {
+                return "Free"
+            }
+            return 2.55
         }
+    }
+})
+
+Vue.component('product-details', {
+    props: {
+        details: {
+            type: Array,
+            required: true
+        }
+    },
+    template: `
+        <ul>
+            <li v-for="detail in details">{{detail}}</li>
+        </ul>
+    `
+})
+
+var app = new Vue({
+    el: '#app',
+    data: {
+        premium: true,
     }
 })
