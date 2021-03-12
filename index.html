@@ -18,6 +18,12 @@
 
             <div class="product-info">
                 <h1>{{ product }}</h1>
+                
+                <!-- v-if remove/add element to the DOM
+                U can use v-show to change the visibility instead if the element is frequently changed -->
+                <p v-if="inventory > 10">In Stock</p>
+                <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
+                <p v-else>Out of Stock</p>
             </div>
 
         </div>
