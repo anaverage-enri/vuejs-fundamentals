@@ -1,10 +1,9 @@
 var app = new Vue({
     el: '#app',
     data: {
+        brand: 'Vue Mastery',
         product: 'Socks',
-        inventory: 8,
-        inStock: false,
-        image: './assets/vmSocks-green-onWhite.jpg',
+        selectedVariant: 0,
         description: 'A pair of warm, fuzzy socks',
         details: ["80% cotton", "20% polyester", "Gender-neutral"],
         sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
@@ -13,11 +12,13 @@ var app = new Vue({
                 variantId: 0001,
                 variantColor: "green",
                 variantImage: './assets/vmSocks-green-onWhite.jpg',
+                variantQuantity: 10,
             },
             {
                 variantId: 0002,
                 variantColor: "blue",
                 variantImage: './assets/vmSocks-blue-onWhite.jpg',
+                variantQuantity: 0,
             }
         ],
         cart: 0,
@@ -33,8 +34,22 @@ var app = new Vue({
             }
         },
 
-        updateProduct(variantImage) {
-            this.image = variantImage
+        updateProduct(index) {
+            this.selectedVariant = index
+        }
+    },
+
+    computed: {
+        title() {
+            return this.brand + ' ' + this.product
+        },
+
+        image() {
+            return this.variants[this.selectedVariant].variantImage;
+        },
+        
+        inStock() {
+            return this.variants[this.selectedVariant].variantQuantity
         }
     }
 })
