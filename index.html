@@ -13,6 +13,7 @@
     <div id="app">
         <div class="product">
             <div class="product-image">
+                <!-- u can use ":" instead of "v-bind:" -->
                 <img :src="image" :alt="description">
             </div>
 
@@ -33,10 +34,19 @@
                 </ul>
 
                 <div v-for="variant in variants" :key="variant.variantId">
-                    <p>{{ variant.variantColor }}</p>
+                    <!-- u can use "@" instead of "v-on:" -->
+                    <p @mouseover="updateProduct(variant.variantImage)">{{ variant.variantColor }}</p>
+                </div>
+
+                <button @click="addToCart">Add to Cart</button>
+                <button @click="removeFromCart">Remove from Cart</button>
+                
+                <div class="cart">
+                    <p>Cart({{ cart }})</p>
                 </div>
             </div>
-
+        
+            
         </div>
     </div>
 
