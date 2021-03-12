@@ -1,7 +1,8 @@
 var app = new Vue({
     el: '#app',
     data: {
-        product: 'Backpack',
-        description: 'A luxury leather backpack that you can use on a daily basis',
+        product: 'Socks',
+        image: './assets/vmSocks-green-onWhite.jpg',
+        description: 'A pair of warm, fuzzy socks',
     }
 })
