@@ -20,7 +20,7 @@ Vue.component('product', {
                 <p v-if="inStock">In Stock</p>
                 <p v-else>Out of Stock</p>
                 <p>Shipping: {{shipping}}</p>
-                
+
                 <product-details :details="details"></product-details>
                 
                 <ul>
@@ -36,13 +36,10 @@ Vue.component('product', {
                 </div>
 
                 <button @click="addToCart" 
-                    :disable="!inStock"
+                    :disabled="!inStock"
                     :class="{ disabledButton: !inStock}">Add to Cart</button>
-                <!-- <button @click="removeFromCart">Remove from Cart</button> -->
-                
-                <div class="cart">
-                    <p>Cart({{cart}})</p>
-                </div>
+                <button @click="removeFromCart">Remove from Cart</button>
+            
             </div>
         </div>
     `,
@@ -67,19 +64,16 @@ Vue.component('product', {
                     variantImage: './assets/vmSocks-blue-onWhite.jpg',
                     variantQuantity: 0,
                 }
-            ],
-            cart: 0,
+            ]
         }
     },
     methods: {
         addToCart() {
-            this.cart += 1
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId)
         },
 
         removeFromCart() {
-            if (this.cart > 0) {
-                this.cart -= 1
-            }
+            this.$emit('remove-from-cart', this.variants[this.selectedVariant].variantId)
         },
 
         updateProduct(index) {
@@ -126,5 +120,18 @@ var app = new Vue({
     el: '#app',
     data: {
         premium: true,
+        cart: []
+    },
+    methods: {
+        updateCart(id) {
+            this.cart.push(id)
+        },
+        removeItem(id) {
+            for(var i = this.cart.length - 1; i >= 0; i--) {
+                if (this.cart[i] === id) {
+                    this.cart.splice(i, 1);
+                }
+            }
+        }
     }
 })
